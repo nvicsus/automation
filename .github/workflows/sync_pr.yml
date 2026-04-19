@@ -1,8 +1,7 @@
 name: Create PR in downstream repo
 
 on:
-  pull_request:
-    types: [opened, reopened]
+  workflow_call:
 
 jobs:
   create-pr-in-target:
