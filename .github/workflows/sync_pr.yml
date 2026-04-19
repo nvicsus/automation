@@ -53,4 +53,34 @@ jobs:
             "$URL" 
 
 
+  close-pr-in-target:
+    if: ${{ inputs.trigger_reason == 'closed' }}
+    runs-on: ubuntu-latest
 
+    steps:
+      - name: Checkout source PR
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Extract PR info
+        id: pr
+        run: |
+          echo "pr_id=${{ github.event.pull_request.number }}" >> $GITHUB_ENV
+          target_repo=$(echo "${GITHUB_REPOSITORY#*/}" | sed 's/DA-//')
+          echo "target_repo=$target_repo" >> $GITHUB_ENV
+          echo "target_owner=nvicsus" >> $GITHUB_ENV
+
+      - name: Create PR in target repo
+        env:
+          GH_TOKEN: ${{ secrets.PAT }}
+        run: |
+          URL="https://api.github.com/repos/$target_owner/$target_repo/pulls/$pr_id"
+          curl -X PATCH \
+            -H "Accept: application/vnd.github+json" \
+            -H "Authorization: Bearer $GH_TOKEN" \
+            -H "X-GitHub-Api-Version: 2026-03-10" \
+            -d {"state":"closed"}' \
+            "$URL" 
+
+  
