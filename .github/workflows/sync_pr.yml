@@ -2,6 +2,9 @@ name: Create PR in downstream repo
 
 on:
   workflow_call:
+    secrets:
+      PAT:
+        required: true
 
 jobs:
   create-pr-in-target:
