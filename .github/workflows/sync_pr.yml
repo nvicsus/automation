@@ -12,6 +12,7 @@ on:
 
 jobs:
   create-pr-in-target:
+    if: ${{ inputs.trigger_reason == 'opened' }}
     runs-on: ubuntu-latest
 
     steps:
@@ -30,7 +31,6 @@ jobs:
           target_repo=$(echo "${GITHUB_REPOSITORY#*/}" | sed 's/DA-//')
           echo "target_repo=$target_repo" >> $GITHUB_ENV
           echo "target_owner=nvicsus" >> $GITHUB_ENV
-         
 
       - name: Create PR in target repo
         env:
