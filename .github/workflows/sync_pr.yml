@@ -2,6 +2,10 @@ name: Create PR in downstream repo
 
 on:
   workflow_call:
+    inputs:
+      trigger_reason:
+        required: true
+        type: string
     secrets:
       PAT:
         required: true
@@ -26,6 +30,7 @@ jobs:
           target_repo=$(echo "${GITHUB_REPOSITORY#*/}" | sed 's/DA-//')
           echo "target_repo=$target_repo" >> $GITHUB_ENV
           echo "target_owner=nvicsus" >> $GITHUB_ENV
+         
 
       - name: Create PR in target repo
         env:
