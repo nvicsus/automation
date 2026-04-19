@@ -12,7 +12,7 @@ on:
 
 jobs:
   create-pr-in-target:
-    if: ${{ inputs.trigger_reason == 'opened' }}
+    if: ${{ inputs.trigger_reason == 'opened' }} || ${{ inputs.trigger_reason == 'reopened' }}
     runs-on: ubuntu-latest
 
     steps:
